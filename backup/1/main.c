@@ -6,7 +6,7 @@
 /*   By: junkwak <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:47:55 by junkwak           #+#    #+#             */
-/*   Updated: 2024/08/08 19:14:49 by junkwak          ###   ########.fr       */
+/*   Updated: 2024/07/25 19:36:04 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,15 @@ char	*ft_check(char **path, char *cmd)
 {
 	int	i;
 	char	*find;
-	char	*full_cmd;
 	if (access(cmd, X_OK) == 0)
 		return (cmd);
 	i = 0;
 	while (path[i])
 	{
-		find = ft_strjoin(path[i], "/");
-		full_cmd = ft_strjoin(find, cmd);
+		find = ft_strjoin(path[i], cmd);
 		if (access(find, X_OK) == 0)
-			return (full_cmd);
-		free(full_cmd);
+			return (find);
+		free(find);
 		i++;
 	}
 	return (0);
@@ -55,38 +53,34 @@ void	fc_ps(t_arg *pipex, int *fd, char **argv, char **envp)
 {
 	pipex -> f_content = open(argv[1], O_RDONLY, 0644);
 	if (pipex -> f_content == -1)
-		ft_error("child error f.c_ps1");
+		ft_error("child error");
 	pipex -> order1 = ft_check(pipex -> path, pipex -> cmd1[0]);
-	if (!pipex -> order1)
-		ft_error("command not found fc_ps1-1");
 	close(fd[0]);
 	if (dup2(pipex -> f_content, 0) == -1)
-		ft_error("dup2 error f.c_ps 2");
+		ft_error("dup2 error");
 	if (dup2(fd[1], 1) == -1)
-		ft_error("dup2 error f.c_ps 3");
+		ft_error("dup2 error");
 	close(fd[1]);
 	close(pipex -> f_content);
 	if (execve(pipex -> order1, pipex -> cmd1, envp) == -1)
-	       ft_error("exec error f.c 4");
+	       ft_error("exec error");
 }	
 		
 void	sc_ps(t_arg *pipex, int *fd, char **argv, char **envp)
 {
 	pipex -> s_content = open (argv[4], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pipex -> s_content == -1)
-		ft_error("child error sc 1");
+		ft_error("child error");
 	pipex -> order2 = ft_check(pipex -> path, pipex -> cmd2[0]);
-	if (!pipex -> order2)
-		ft_error("command not found sc1-1");
 	close(fd[1]);
-	if (dup2(pipex -> s_content, 0) == -1)   //fd[0]
-		ft_error("dup2 error sc 2");
-	if (dup2(fd[0], 1) == -1) // pipex -> s_content
-		ft_error("dup2 error sc3");
+	if (dup2(pipex -> s_content, 0) == -1)
+		ft_error("dup2 error");
+	if (dup2(fd[1], 1) == -1)
+		ft_error("dup2 error");
 	close(fd[0]);
 	close(pipex -> s_content);
-	if (execve(pipex -> order2, pipex -> cmd2, envp) == -1)
-		ft_error("exec error sc4");
+	if (execve(pipex -> order1, pipex -> cmd1, envp) == -1)
+		ft_error("exec error");
 }
 
 void	ft_make_pipex(t_arg *pipex, char **argv, char **envp)
@@ -134,7 +128,9 @@ void	ft_free(char **all)
 int	main(int argc, char **argv,char **envp)
 {
 	t_arg	pipex;
-	
+	int	i;
+
+	i = 0;
 	if (argc != 5)
 		ft_error("input error :(");
 	pipex.cmd1 = ft_ppsplit(argv[2], ' '); // 스플릿체크

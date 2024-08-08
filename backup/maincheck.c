@@ -6,25 +6,11 @@
 /*   By: junkwak <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:21:00 by junkwak           #+#    #+#             */
-/*   Updated: 2024/08/08 19:11:35 by junkwak          ###   ########.fr       */
+/*   Updated: 2024/07/23 14:56:34 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*a;
-	size_t		i;
-
-	i = 0;
-	a = s;
-	while (i < n)
-	{
-		a[i] = 0;
-		i++;
-	}
-}
+#include "FT_PIPEX.H"
 
 static void	ft_free(char **result)
 {
@@ -69,7 +55,8 @@ static int	ft_find(char const *str, char c, char **result, int i)
 			len = 0;
 			while ((str[len] != 0) && (str[len] != c))
 				len++;
-			result[i] = (char *)ft_calloc(sizeof(char *) * len + 1, sizeof(char));
+			result[i] = (char *)malloc(sizeof(char *)
+					* len + 1, sizeof(char));
 			if (!(result[i]))
 			{
 				ft_free(result);
@@ -83,24 +70,13 @@ static int	ft_find(char const *str, char c, char **result, int i)
 	return (1);
 }
 
-void	*ft_calloc(size_t ec, size_t es)
-{
-	char	*res;
-
-	res = malloc(es * ec);
-	if (!res)
-		return (NULL);
-	ft_bzero(res, es * ec);
-	return (res);
-}
-
-char	**ft_ppsplit(char *s, char c)
+char	**ft_ppsplit(char const *s, char c)
 {
 	char	**result;
 	size_t	len;
 
 	len = ft_count(s, c);
-	result = (char **)ft_calloc(sizeof(char *) * (len + 1), sizeof(char));
+	result = (char **)malloc(sizeof(char *) * (len + 1), sizeof(char));
 	if (!(result))
 		return (NULL);
 	if ((ft_find(s, c, result , 0)) == -1)

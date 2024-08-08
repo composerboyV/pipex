@@ -6,7 +6,7 @@
 /*   By: junkwak <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:48:16 by junkwak           #+#    #+#             */
-/*   Updated: 2024/08/08 19:10:26 by junkwak          ###   ########.fr       */
+/*   Updated: 2024/07/25 19:34:58 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	ft_error(char *s);
 void	fc_ps(t_arg *pipex, int *fd, char **argv, char **envp);
 void	sc_ps(t_arg *pipex, int *fd, char **argv, char **envp);
 void	ft_make_pipex(t_arg *pipex, char **argv, char **envp);
-void	*ft_calloc(size_t ec, size_t es);
-void	ft_bzero(void *s, size_t n);
+void	ft_free(char **all);
+
 
 #endif
 
