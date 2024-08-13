@@ -1,0 +1,14 @@
+Makefile
+infile
+main.c
+main.o
+main2.c
+main2.o
+maincheck.c
+maincheck.o
+outfile
+pipe_split.c
+pipe_split.o
+pipex
+pipex.a
+pipex.h
